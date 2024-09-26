@@ -73,6 +73,42 @@ void test_list_str(){
 
     EXPECT_EQ(obj.str(), "{ [0] = -1, [1] = -1, [2] = -1 }");
 }
+void test_list_cctor(){
+    auto obj = List<int>{3, -1};
+    EXPECT_EQ(obj.size(), 3);
+    EXPECT_EQ(obj.str(), "{ [0] = -1, [1] = -1, [2] = -1 }");
+
+    auto obj2(obj);
+    EXPECT_EQ(obj2.size(), obj.size());
+    EXPECT_EQ(obj2.str(), obj.str());
+}
+void test_list_op_cpy(){
+    auto obj = List<int>{3, -1};
+    EXPECT_EQ(obj.str(), "{ [0] = -1, [1] = -1, [2] = -1 }");
+
+    // obj size == obj2 size
+    List<int> obj2 ;
+    obj2.push_back(10);
+    obj2.push_back(100);
+    obj2.push_back(1);
+    obj2 = obj;
+    EXPECT_EQ(obj2.size(), obj.size());
+    EXPECT_EQ(obj2.str(), obj.str());
+
+    // obj size < obj3 size
+    List<int>  obj3;
+    EXPECT_EQ(obj3.size(), 0);
+    obj3 = obj;
+    EXPECT_EQ(obj3.size(), obj.size());
+    EXPECT_EQ(obj3.str(), obj.str());
+
+    // obj size < obj3 size
+    List<int> obj4(12, 2);
+    EXPECT_EQ(obj4.size(), 12);
+    obj4 = obj;
+    EXPECT_EQ(obj4.size(), obj.size());
+    EXPECT_EQ(obj4.str(), obj.str());
+}
 
 int main(){
     Test(test_list_ctor);
@@ -84,4 +120,6 @@ int main(){
     Test(test_list_front);
     Test(test_list_op_pracket);
     Test(test_list_str);
+    Test(test_list_cctor);
+    Test(test_list_op_cpy);
 }
