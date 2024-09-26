@@ -21,6 +21,57 @@ public:
             this->push_back(init);
         }
     }
+    List(const List& other){
+         if (other.Head) {
+            this->Head = new Node{other.Head->data, nullptr};
+            Node* current = this->Head;
+            m_size = 1;
+
+            Node* otherCurrent = other.Head->next;
+            while (otherCurrent) {
+                m_size++;
+                current->next = new Node{otherCurrent->data, nullptr};
+                current = current->next;
+                otherCurrent = otherCurrent->next;
+            }
+        } else {
+            this->m_size = 0;
+            this->Head = nullptr;
+        }
+    }
+    List operator=(const List& other){
+        if(this->m_size == other.m_size){
+            for (size_t i = 0; i < this->m_size; i++)
+            {
+                (*this)[i] = other[i];
+            }
+        }
+        else if(this->m_size < other.m_size){
+            size_t i;
+            for ( i = 0; i < this->m_size; i++)
+            {
+                (*this)[i] = other[i];
+            }
+
+            for (size_t j = i; j < other.m_size; j++)
+            {
+                this->push_back(other[j]);
+            }
+        }
+        else{
+            size_t i;
+            size_t this_size = this->m_size;
+            for ( i = 0; i < other.m_size; i++)
+            {
+                (*this)[i] = other[i];
+            }
+            for (size_t j = i; j < this_size; j++)
+            {
+                this->pop();
+            }
+        }
+        return *this;
+    }
     ~List() {
         if(m_size > 0){
            clear();
