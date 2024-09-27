@@ -15,7 +15,6 @@ if(MSVC)
     set(CMAKE_CXX_FLAGS_RELEASE "/O2 /MD /DNDEBUG /Ob2")  # Optimize for MSVC
     set(CMAKE_CXX_FLAGS_DEBUG "/Od /MDd /Zi /RTC1")  # Debugging for MSVC
 else()
-    target_compile_options(SHA256 PRIVATE)
     set(CMAKE_CXX_FLAGS_RELEASE " ${WAR_PANIC} -O3 -march=native")  # Optimize for GCC/Clang
     set(CMAKE_CXX_FLAGS_DEBUG " ${WAR_PANIC} -O0 -g3 -ggdb")  # Debugging for GCC/Clang
 endif()
