@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <optional>
 template<typename T>
 class List
 {
@@ -7,6 +7,8 @@ class List
     using value_type = T;
     using reference	= value_type&;
     using const_reference = const value_type&;
+    using difference_type = std::ptrdiff_t;
+    using pointer = T*;
 
     struct Node
     {
@@ -14,6 +16,39 @@ class List
         Node* next;
     };
 
+    class Iterator {
+    private:
+        Node* current;
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = T;
+        using difference_type = std::ptrdiff_t;
+        using pointer = T*;
+        using reference = T&;
+    public:
+        explicit Iterator(Node* node) : current(node) {}
+
+        T& operator*() const { return current->data; }
+
+        // Pre-increment
+        Iterator& operator++() {
+            current = current->next;
+            return *this;
+        }
+
+        // Post-increment
+        Iterator operator++(int) {
+            Iterator temp = *this;
+            ++(*this);
+            return temp;
+        }
+        bool operator==(const Iterator& other) const {
+            return current == other.current;
+        }
+        bool operator!=(const Iterator& other) const {
+            return current != other.current;
+        }
+    };
 public:
     List(): m_size(0), Head(nullptr) {}
     List(size_t size, value_type init):List(){
@@ -77,15 +112,25 @@ public:
            clear();
         }
     };
+    /// @brief check is list empty 
+    /// @return true if empty, else flase
     bool empty() const noexcept {
         return m_size == 0;
     }
+    /// @brief Get first element
+    /// @return a  reference
     reference front(){
         return Head->data;
     }
+    /// @brief Get first element
+    /// @return a const reference
     const_reference front() const{    
         return Head->data;
     }
+    Iterator begin() { return Iterator(Head); }
+    Iterator end() { return Iterator(nullptr); }
+    /// @brief inssert back
+    /// @param value value of node
     void push_back(value_type value){
         Node *n = new Node {.data = value, .next = nullptr};
 
@@ -101,6 +146,9 @@ public:
 
         m_size++;
     };
+    /// @brief inssert at given pos
+    /// @param pos position to inssert in
+    /// @param value value of node
     void push_at(size_t pos, value_type value){
         assert(pos < m_size);
         Node *n = new Node {.data = value, .next = nullptr};
@@ -117,6 +165,7 @@ public:
         }
         m_size++;
     }
+    /// @brief Remove last element in list
     void pop(){
         if (m_size == 1) {
             delete Head;
@@ -131,6 +180,8 @@ public:
         }
         m_size--;
     }
+    /// @brief Remove index the index in param
+    /// @param pos Index to remove
     void remove(size_t pos){
         assert(pos < m_size);
         if (pos == 0) {
@@ -148,6 +199,7 @@ public:
         }
         m_size--;
     }
+    /// @brief Clear all list
     void clear() {
         Node* current = Head;
     
@@ -161,10 +213,13 @@ public:
         m_size = 0;
         
     }
+    /// @brief Print to stdout str()
     void print() const {
         std::cout << str() << std::endl;
     }
-    std::string str() const{
+    /// @brief Get list represntaion in strin
+    /// @return List to string
+    std::string str() const {
         std::ostringstream oss;
         oss << "{ ";
         Node* c = Head;
@@ -180,6 +235,8 @@ public:
         oss << " }" ;
         return oss.str();
     }
+    /// @brief Get size of the list
+    /// @return size
     size_t size() const noexcept { return m_size; }
     value_type operator[](size_t index) const {
         assert(index < m_size);
@@ -200,6 +257,19 @@ public:
         }
         
         return current->data;
+    }
+    /// @brief Find index of elemnt in list
+    /// @param val The value searching for
+    /// @return Index of element, range(0, size), if std::nullopt
+    std::optional<size_t> find(const value_type& val) const {
+        for (size_t i = 0; i < m_size; i++)
+        {
+            if((*this)[i] == val) {
+                return i;
+                break;
+            }
+        }
+        return std::nullopt;
     }
 private:
     void free_node(reference n){
