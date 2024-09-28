@@ -92,28 +92,30 @@ TEST_CASE("op_cpy", "[list]"){
     auto obj = List<int>{3, -1};
     REQUIRE(obj.str() == "{ [0] = -1, [1] = -1, [2] = -1 }");
 
-    // obj size == obj2 size
     List<int> obj2 ;
-    obj2.push_back(10);
-    obj2.push_back(100);
-    obj2.push_back(1);
-    obj2 = obj;
-    REQUIRE(obj2.size() == obj.size());
-    REQUIRE(obj2.str() == obj.str());
-
-    // obj size < obj3 size
+    SECTION("obj size == obj3 size"){
+        obj2.push_back(10);
+        obj2.push_back(100);
+        obj2.push_back(1);
+        obj2 = obj;
+        REQUIRE(obj2.size() == obj.size());
+        REQUIRE(obj2.str() == obj.str());
+    }
     List<int>  obj3;
-    REQUIRE(obj3.size() == 0);
-    obj3 = obj;
-    REQUIRE(obj3.size() == obj.size());
-    REQUIRE(obj3.str() == obj.str());
+    SECTION("obj size < obj3 size"){
+        REQUIRE(obj3.size() == 0);
+        obj3 = obj;
+        REQUIRE(obj3.size() == obj.size());
+        REQUIRE(obj3.str() == obj.str());
+    }
 
-    // obj size < obj3 size
     List<int> obj4(12, 2);
-    REQUIRE(obj4.size() == 12);
-    obj4 = obj;
-    REQUIRE(obj4.size() == obj.size());
-    REQUIRE(obj4.str() == obj.str());
+    SECTION("obj size > obj3 size"){
+        REQUIRE(obj4.size() == 12);
+        obj4 = obj;
+        REQUIRE(obj4.size() == obj.size());
+        REQUIRE(obj4.str() == obj.str());
+    }
 }
 
 TEST_CASE("find", "[list]"){
@@ -129,7 +131,7 @@ TEST_CASE("find", "[list]"){
 
 TEST_CASE("iterators", "[list]"){
     List<int> obj;
-    size_t i;
+    int i;
     for (i = 0; i < 10; i++)
     {
         obj.push_back(i);
