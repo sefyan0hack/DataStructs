@@ -2,6 +2,9 @@
 /build/
 *.build/
 
+# CMake Catch2 directory
+/Catch2/
+*.Catch2/
 # Visual Studio Code settings
 .vscode/
 *.code-workspace
