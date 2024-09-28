@@ -87,27 +87,27 @@ Test(List, op_cpy){
     EXPECT_EQ(obj.str(), "{ [0] = -1, [1] = -1, [2] = -1 }");
 
     // obj size == obj2 size
-    List<int> obj2 ;
-    obj2.push_back(10);
-    obj2.push_back(100);
-    obj2.push_back(1);
-    obj2 = obj;
-    EXPECT_EQ(obj2.size(), obj.size());
-    EXPECT_EQ(obj2.str(), obj.str());
+        List<int> obj2 ;
+        obj2.push_back(10);
+        obj2.push_back(100);
+        obj2.push_back(1);
+        obj2 = obj;
+        EXPECT_EQ(obj2.size(), obj.size());
+        EXPECT_EQ(obj2.str(), obj.str());
 
     // obj size < obj3 size
-    List<int>  obj3;
-    EXPECT_EQ(obj3.size(), 0);
-    obj3 = obj;
-    EXPECT_EQ(obj3.size(), obj.size());
-    EXPECT_EQ(obj3.str(), obj.str());
+        List<int>  obj3;
+        EXPECT_EQ(obj3.size(), 0);
+        obj3 = obj;
+        EXPECT_EQ(obj3.size(), obj.size());
+        EXPECT_EQ(obj3.str(), obj.str());
 
     // obj size < obj3 size
-    List<int> obj4(12, 2);
-    EXPECT_EQ(obj4.size(), 12);
-    obj4 = obj;
-    EXPECT_EQ(obj4.size(), obj.size());
-    EXPECT_EQ(obj4.str(), obj.str());
+        List<int> obj4(12, 2);
+        EXPECT_EQ(obj4.size(), 12);
+        obj4 = obj;
+        EXPECT_EQ(obj4.size(), obj.size());
+        EXPECT_EQ(obj4.str(), obj.str());
 }
 Test(List, find){
     auto obj = List<int>();
@@ -137,5 +137,7 @@ Test(List, iterators){
 }
 
 int main(){
-    RUN_ALL_TESTS();
+    // RUN_ALL_TESTS();
+    { for (const auto& func : getFuncRegistry()){ (*func)(); std::cout << "SUCCESS" << std::endl;} }
+
 }

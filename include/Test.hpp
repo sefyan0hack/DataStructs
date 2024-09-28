@@ -12,12 +12,6 @@ template <typename T>
 concept Streamable = requires(T a, std::ostream& os) {
     { os << a } -> std::same_as<std::ostream&>;
 };
-#define T(Class, member) {\
-        std::cout << std::endl;\
-        std::cout << "[" << __COUNTER__ + 1<< "] " << #Class"."#member << " : ";\
-        Class##_##member();\
-        std::cout << "SUCCESS" << std::endl;\
-    }
 
 constexpr void EXPECT_EQ(auto val, decltype(val) expe){
     if (!(val == expe)) {
@@ -42,26 +36,41 @@ constexpr void EXPECT_NEQ(auto val, decltype(val) expe){
 }
 
 using TestFunction = std::function<void()>;
-std::vector<TestFunction> rfuncs;
 
-std::vector<TestFunction>& getFuncRegistry() {
-    static std::vector<TestFunction> funcRegistry;
+std::vector<TestFunction*>& getFuncRegistry() {
+    // static std::vector<TestFunction> funcRegistry;
+    static std::vector<TestFunction*> funcRegistry;
     return funcRegistry;
 }
 
-void registerFunc(TestFunction func) {
+void registerFunc(TestFunction* func) {
+    // getFuncRegistry().push_back(func);
     getFuncRegistry().push_back(func);
 }
 
 class AutoRegistrar {
 public:
-    AutoRegistrar(TestFunction func) {
+    // AutoRegistrar(TestFunction func) {
+    //     registerFunc(func);
+    // }
+    AutoRegistrar(TestFunction* func) {
         registerFunc(func);
     }
 };
+#define T(Class, member) {\
+        std::cout << std::endl;\
+        std::cout << "[" << __COUNTER__ + 1<< "] " << #Class"."#member << " : ";\
+        Class##_##member();\
+    }
+
 #define Test(Class, member)           \
     void Class##_##member();                        \
-    static AutoRegistrar _registrar_##Class##_##member([]() { T(Class, member); }); \
+    std::function<void()> _##Class##_##member##_##lambda = []() { T(Class, member); };\
+    static AutoRegistrar _registrar_##Class##_##member(&_##Class##_##member##_##lambda); \
     void Class##_##member()
 
-#define RUN_ALL_TESTS() {for (const auto& func : getFuncRegistry()) func();}
+#define RUN_ALL_TESTS() {\
+    for (const auto& func : getFuncRegistry()){\
+        func();\
+        std::cout << "SUCCESS" << std::endl;}\
+    }
