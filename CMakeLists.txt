@@ -19,39 +19,10 @@ else()
     set(CMAKE_CXX_FLAGS_DEBUG "${WAR_PANIC} -O0 -g3 -ggdb")  # Debugging for GCC/Clang
 endif()
 
-# include_directories("${CMAKE_SOURCE_DIR}/DataStructs")
-# add_library(List INTERFACE "${CMAKE_SOURCE_DIR}/DataStructs/List.hpp")
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/DataStructs)
 add_subdirectory(${CMAKE_SOURCE_DIR}/tests)
 
 
-
-
-# Add executable
-# add_executable(List_test tests/List.cpp)
-# target_link_libraries(List_test List Catch2::Catch2WithMain)
-
-# enable_testing()
-# add_test(NAME ListTest COMMAND List_test)
-
-
-# # Specify post-build commands to copy files
-# add_custom_command(TARGET List_test POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#         $<TARGET_FILE:List_test>
-#         "${CMAKE_BINARY_DIR}/build/_CPack_Packages/win32/NSIS/List-0.1.1-win32/"
-# )
-
-# Optionally, copy DLLs if your project generates any
-# add_custom_command(TARGET List_test POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#         "path/to/your/dlls/*.dll"
-#         "${CMAKE_BINARY_DIR}/build/_CPack_Packages/win32/NSIS/List-0.1.1-win32/"
-# )
-
 include(CPack)
 set(CPACK_GENERATOR "ZIP")
-# set(CPACK_PACKAGE_NAME "List_test")
-# set(CPACK_PACKAGE_VERSION "1.0.0")
-# set(CPACK_NSIS_INSTALLER_ICON "${CMAKE_SOURCE_DIR}/icon.ico")  # Optional
