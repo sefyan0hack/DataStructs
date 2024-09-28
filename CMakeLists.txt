@@ -19,11 +19,28 @@ else()
     set(CMAKE_CXX_FLAGS_DEBUG " ${WAR_PANIC} -O0 -g3 -ggdb")  # Debugging for GCC/Clang
 endif()
 
-include_directories("${CMAKE_SOURCE_DIR}/include")
 include_directories("${CMAKE_SOURCE_DIR}/DataStructs")
 
 add_library(List INTERFACE "${CMAKE_SOURCE_DIR}/DataStructs/List.hpp")
 
+# Check if Catch2 directory exists, otherwise use FetchContent
+if(EXISTS "${CMAKE_SOURCE_DIR}/Catch2")
+    message(STATUS "Using local Catch2")
+    add_subdirectory(${CMAKE_SOURCE_DIR}/Catch2)
+else()
+    message(STATUS "Fetching Catch2 from GitHub")
+    include(FetchContent)
+    FetchContent_Declare(
+        Catch2
+        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+        GIT_TAG        v3.4.0 # or a later release
+    )
+    FetchContent_MakeAvailable(Catch2)
+endif()
+
 # Add executable
-add_executable(test src/test.cpp)
-target_link_libraries(test List)
+add_executable(List_test tests/List.cpp)
+target_link_libraries(List_test List Catch2::Catch2WithMain)
+
+enable_testing()
+add_test(NAME ListTest COMMAND test)
