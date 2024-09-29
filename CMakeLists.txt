@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(List LANGUAGES CXX)
+project(DataStructs LANGUAGES CXX)
 
 # Use C++23
 set(CMAKE_CXX_STANDARD 23)
@@ -19,10 +19,11 @@ else()
     set(CMAKE_CXX_FLAGS_DEBUG "${WAR_PANIC} -O0 -g3 -ggdb")  # Debugging for GCC/Clang
 endif()
 
+set(BUILD_TEST "" ON)
+
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/DataStructs)
-add_subdirectory(${CMAKE_SOURCE_DIR}/tests)
-
-
-include(CPack)
-set(CPACK_GENERATOR "ZIP")
+if(BUILD_TEST)
+    message( BUILD_TEST " Build Tests ...")
+    add_subdirectory(${CMAKE_SOURCE_DIR}/tests)
+endif()

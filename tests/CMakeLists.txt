@@ -1,4 +1,4 @@
-project(Testing)
+project(DataStructs)
 
 include_directories("${CMAKE_SOURCE_DIR}/DataStructs")
 
@@ -10,8 +10,7 @@ else()
     include(FetchContent)
     FetchContent_Declare(
         Catch2
-        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-        GIT_TAG        v3.4.0 # or a later release
+        URL https://github.com/catchorg/Catch2/archive/refs/tags/v3.7.1.zip
     )
     FetchContent_MakeAvailable(Catch2)
 endif()
@@ -22,3 +21,5 @@ target_link_libraries(List_test List Catch2::Catch2WithMain)
 
 enable_testing()
 add_test(NAME ListTest COMMAND List_test)
+
+install(TARGETS List_test DESTINATION tests/bin)
