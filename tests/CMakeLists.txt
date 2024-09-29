@@ -1,6 +1,6 @@
 project(DataStructs)
 
-include_directories("${CMAKE_SOURCE_DIR}/DataStructs")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/DataStructs")
 
 if(EXISTS "${CMAKE_SOURCE_DIR}/Catch2")
     message(STATUS "Using local Catch2")
@@ -15,8 +15,8 @@ else()
     FetchContent_MakeAvailable(Catch2)
 endif()
 
-# Add executable
-add_executable(List_test "${CMAKE_SOURCE_DIR}/tests/List.cpp")
+add_executable(List_test "${CMAKE_CURRENT_SOURCE_DIR}/List.cpp")
+
 target_link_libraries(List_test List Catch2::Catch2WithMain)
 
 enable_testing()
