@@ -1,5 +1,6 @@
 #include <iostream>
 #include <optional>
+#include "Result.hpp"
 template<typename T>
 class List
 {
