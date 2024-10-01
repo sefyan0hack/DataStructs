@@ -27,3 +27,5 @@ if(BUILD_TEST)
     message( BUILD_TEST " Build Tests ...")
     add_subdirectory(${CMAKE_SOURCE_DIR}/tests)
 endif()
+
+enable_testing()
