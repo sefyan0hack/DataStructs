@@ -121,11 +121,15 @@ public:
     /// @brief Get first element
     /// @return a  reference
     reference front(){
+        if(this->empty())
+            throw "Linked List is empty";
         return Head->data;
     }
     /// @brief Get first element
     /// @return a const reference
     const_reference front() const{    
+        if(this->empty())
+            throw "Linked List is empty";  
         return Head->data;
     }
     Iterator begin() { return Iterator(Head); }

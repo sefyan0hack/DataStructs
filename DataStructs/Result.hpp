@@ -1,9 +1,9 @@
 #pragma once
-#include <variant>
+#include <expected>
 template<typename Ok, typename Err>
 class Result {
 public:
-    std::variant<Ok, Err> value;
+    std::expected<Ok, Err> value;
 
     Result(const Ok& ok) : value(ok) {}
     Result(const Err& err) : value(err) {}
@@ -32,3 +32,5 @@ public:
         }
     }
 };
+template<typename T>
+using Res = Result<T, const char*>;
