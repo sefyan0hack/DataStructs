@@ -143,5 +143,6 @@ TEST_CASE("iterators", "[list]"){
     }
 
     REQUIRE(*obj.begin() == obj[0]);
+    REQUIRE(obj.end() == typename List<int>::Iterator(nullptr));
 
 }
