@@ -1,7 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch_all.hpp>
-#include "List.hpp"
-
+#include <List.hpp>
 
 TEST_CASE("contructor()","[list]"){
     auto obj = List<int>{};
