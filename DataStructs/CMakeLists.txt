@@ -5,19 +5,21 @@ include("${CMAKE_SOURCE_DIR}/cmake/Scripts.cmake")
 #############################################################
 # Add Libs
 #############################################################
-add_library(List INTERFACE)
-# target_include_directories(List INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}")
-target_include_directories(List INTERFACE
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
-    "$<INSTALL_INTERFACE:lib>"
+add_library(List STATIC ${CMAKE_CURRENT_SOURCE_DIR}/List.cpp)
+target_include_directories(List
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>  # For build tree
+        $<INSTALL_INTERFACE:include>                            # For install tree
 )
-
 
 #############################################################
 # Installing
 #############################################################
 install_tar(List LIST)
 
+install(DIRECTORY
+    ${CMAKE_CURRENT_SOURCE_DIR}/include  DESTINATION  .
+)
 #############################################################
 # Packagin
 #############################################################

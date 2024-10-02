@@ -1,7 +1,6 @@
 project(DataStructs)
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/DataStructs")
-
+# include_directories("${CMAKE_CURRENT_SOURCE_DIR}/DataStructs")
 set(CATCH2_BUILD_TYPE Release)
 set(CMAKE_BUILD_TYPE ${CATCH2_BUILD_TYPE} CACHE STRING "Build type" FORCE)
 if(EXISTS "${CMAKE_SOURCE_DIR}/Catch2")
@@ -33,6 +32,11 @@ endif()
 set(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING "Build type" FORCE)  # Restore original build type
 
 add_executable(List_test "${CMAKE_CURRENT_SOURCE_DIR}/List.cpp")
+
+target_include_directories(List_test
+    PUBLIC
+        $<TARGET_PROPERTY:List,INTERFACE_INCLUDE_DIRECTORIES>
+)
 
 target_link_libraries(List_test List Catch2::Catch2WithMain)
 
