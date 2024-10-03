@@ -1,7 +1,7 @@
 #pragma once
 #include <optional>
 
-template<typename T>
+template<typename T> requires (!std::is_same_v<T, const char*>) 
 class List
 {
     public:
@@ -15,6 +15,7 @@ class List
     {
         value_type data;
         Node* next;
+        Node(value_type value, Node* nextNode);
     };
 
     class Iterator {
@@ -40,15 +41,34 @@ class List
             bool operator!=(const Iterator& other) const;
     };
 public:
+    /// @brief Default Constructor List
     List();
+
+    /// @brief Constructor reserving and init 
+    /// @param size init  size
+    /// @param init init value
     List(size_t size, value_type init);
+
+    /// @brief Copy Constructor
+    /// @param other other List
     List(const List& other);
+
+    /// @brief Destructor
     ~List();
 
+    /// @brief Copy assignment Operator 
+    /// @param other other List
+    /// @return List
     List operator=(const List& other);
-    
+
+    /// @brief index by value Operator
+    /// @param index index you wnat to get 
+    /// @return underling Type if exist. and assert if index > size_t
     value_type operator[](size_t index) const;
 
+    /// @brief index by reference Operator
+    /// @param index index you wnat to set
+    /// @return underling Type if exist. and assert if index > size_t
     reference operator[](size_t index);
 
     /// @brief check is list empty 
@@ -63,7 +83,12 @@ public:
     /// @return a const reference
     const_reference front() const;
 
+    /// @brief return Iterator to begin of List
+    /// @return Iterator to begin of List . if list is empty Iterator(nullptr)
     Iterator begin();
+
+    /// @brief return Iterator to end of List
+    /// @return Iterator to end of List . if list is empty Iterator(nullptr)
     Iterator end();
 
     /// @brief inssert back

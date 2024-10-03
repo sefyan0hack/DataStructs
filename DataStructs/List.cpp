@@ -2,51 +2,61 @@
 #include <optional>
 #include <sstream>
 #include <cassert>
+#include <type_traits>
+#include <cstring>
 #include "include/List.hpp"
 
+
 #pragma region List::Iterator
-template<typename T>
+
+#define __TEMPL template<typename T> requires (!std::is_same_v<T, const char*>)
+#define INL_TEMPL __TEMPL inline
+
+INL_TEMPL
 List<T>::Iterator::Iterator(Node* node) : current(node) {}
 
-template<typename T>
+INL_TEMPL
 T& List<T>::Iterator::operator*() const { return current->data; }
 
-template<typename T>
+INL_TEMPL
 List<T>::Iterator& List<T>::Iterator::operator++() {
     current = current->next;
     return *this;
 }
 
-template<typename T>
+INL_TEMPL
 List<T>::Iterator List<T>::Iterator::operator++(int) {
     Iterator temp = *this;
     ++(*this);
     return temp;
 }
 
-template<typename T>
+INL_TEMPL
 bool List<T>::Iterator::operator==(const Iterator& other) const {
     return current == other.current;
 }
 
-template<typename T>
+INL_TEMPL
 bool List<T>::Iterator::operator!=(const Iterator& other) const {
     return current != other.current;
 }
 #pragma endregion
 
+INL_TEMPL
+List<T>::Node::Node(value_type value, Node *nextNode): data(value), next(nextNode){}
+
 #pragma region List
-template<typename T>
+INL_TEMPL
 List<T>::List(): m_size(0), Head(nullptr) {}
 
-template<typename T>
+INL_TEMPL
 List<T>::List(size_t size, value_type init):List(){
     for(size_t i = 0; i < size; i++){
         this->push_back(init);
     }
 }
 
-template<typename T>
+INL_TEMPL
 List<T>::List(const List& other){
      if (other.Head) {
         this->Head = new Node{other.Head->data, nullptr};
@@ -65,14 +75,14 @@ List<T>::List(const List& other){
     }
 }
 
-template<typename T>
+INL_TEMPL
 List<T>::~List() {
     if(m_size > 0){
        clear();
     }
 }
 
-template<typename T>
+INL_TEMPL
 List<T> List<T>::operator=(const List& other){
     if(this->m_size == other.m_size){
         for (size_t i = 0; i < this->m_size; i++)
@@ -106,7 +116,7 @@ List<T> List<T>::operator=(const List& other){
     return *this;
 }
 
-template<typename T>
+INL_TEMPL
 List<T>::value_type List<T>::operator[](size_t index) const {
     assert(index < m_size);
 
@@ -118,7 +128,7 @@ List<T>::value_type List<T>::operator[](size_t index) const {
     return current->data;
 }
 
-template<typename T>
+INL_TEMPL
 List<T>::reference List<T>::operator[](size_t index){
     assert(index < m_size);
 
@@ -130,14 +140,14 @@ List<T>::reference List<T>::operator[](size_t index){
     return current->data;
 }
 
-template<typename T>
+INL_TEMPL
 bool List<T>::empty() const noexcept {
     return m_size == 0;
 }
 
-template<typename T>
+INL_TEMPL
 void List<T>::push_back(value_type value){
-    Node *n = new Node {.data = value, .next = nullptr};
+    Node *n = new Node(value, nullptr);
     if (Head == nullptr) {
         Head = n;
     } else {
@@ -150,10 +160,10 @@ void List<T>::push_back(value_type value){
     m_size++;
 };
 
-template<typename T>
+INL_TEMPL
 void List<T>::push_at(size_t pos, value_type value){
     assert(pos < m_size);
-    Node *n = new Node {.data = value, .next = nullptr};
+    Node *n = new Node(value, nullptr);
     if (pos == 0) {
         n->next = Head;
         Head = n;
@@ -168,7 +178,7 @@ void List<T>::push_at(size_t pos, value_type value){
     m_size++;
 }
 
-template<typename T>
+INL_TEMPL
 void List<T>::pop(){
     if (m_size == 1) {
         delete Head;
@@ -184,7 +194,7 @@ void List<T>::pop(){
     m_size--;
 }
 
-template<typename T>
+INL_TEMPL
 void List<T>::remove(size_t pos){
     assert(pos < m_size);
     if (pos == 0) {
@@ -203,7 +213,7 @@ void List<T>::remove(size_t pos){
     m_size--;
 }
 
-template<typename T>
+INL_TEMPL
 void List<T>::clear() {
     Node* current = Head;
 
@@ -218,12 +228,12 @@ void List<T>::clear() {
     
 }
 
-template<typename T>
+INL_TEMPL
 void List<T>::print() const {
     std::cout << str() << std::endl;
 }
 
-template<typename T>
+INL_TEMPL
 std::string List<T>::str() const {
     std::ostringstream oss;
     oss << "{ ";
@@ -241,7 +251,7 @@ std::string List<T>::str() const {
     return oss.str();
 }
 
-template<typename T>
+INL_TEMPL
 std::optional<size_t> List<T>::find(const value_type& val) const {
     for (size_t i = 0; i < m_size; i++)
     {
@@ -253,23 +263,23 @@ std::optional<size_t> List<T>::find(const value_type& val) const {
     return std::nullopt;
 }
 
-template<typename T>
+INL_TEMPL
 List<T>::Iterator List<T>::begin() { return Iterator(Head); }
 
-template<typename T>
+INL_TEMPL
 List<T>::Iterator List<T>::end() { return Iterator(nullptr); }
 
-template<typename T>
+INL_TEMPL
 List<T>::reference List<T>::front(){
     if(this->empty())
         throw "Linked List is empty";
     return Head->data;
 }
 
-template<typename T>
+INL_TEMPL
 size_t List<T>::size() const noexcept { return m_size; }
 
-template<typename T>
+INL_TEMPL
 List<T>::const_reference List<T>::front() const{    
     if(this->empty())
         throw "Linked List is empty";  
@@ -277,5 +287,13 @@ List<T>::const_reference List<T>::front() const{
 }
 
 #pragma endregion
-// Explicit template instantiation
+
+#pragma region Explicit template instantiation
 template class List<int>;
+template class List<float>;
+// template class List<const char*>; //not supported
+template class List<std::string>;
+#pragma endregion
+
+#undef INL_TEMPL
+#undef __TEMPL
