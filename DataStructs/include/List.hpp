@@ -1,6 +1,12 @@
 #pragma once
-#include <optional>
+/// @brief Forward declaration in std
+namespace std {
+    template <typename T>
+    class optional;  // Forward declaration of std::optional
+}
 
+/// @brief Linked List class 
+/// @tparam T (int, float , string)
 template<typename T> requires (!std::is_same_v<T, const char*>) 
 class List
 {
@@ -123,7 +129,7 @@ public:
 
     /// @brief Find index of elemnt in list
     /// @param val The value searching for
-    /// @return Index of element, range(0, size), if std::nullopt
+    /// @return Index of element, range(0, size-1), if std::nullopt
     std::optional<size_t> find(const value_type& val) const;
 private:
     size_t m_size;
