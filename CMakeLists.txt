@@ -7,6 +7,23 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Clang Tidy
+option(USE_CLANG_TIDY "Use clang" OFF)
+
+if(USE_CLANG_TIDY)
+     message(STATUS "Using clang-tidy")
+     set(CMAKE_CXX_CLANG_TIDY clang-tidy
+     --checks=modernize-*,readability-*,performance-*,-modernize-use-trailing-return-type
+     --header-filter=.*
+     --warnings-as-errors=*
+     )
+    #  add_compile_options(
+    #       -Wunused-variable
+    #       -Wunused-function
+    #       -Wunused-parameter
+    #       -Werror
+    #  )
+endif()
 # Define warning flags
 set(WAR_PANIC "-Wall -Wextra -pedantic")
 

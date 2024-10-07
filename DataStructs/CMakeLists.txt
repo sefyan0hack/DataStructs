@@ -1,5 +1,6 @@
 project(DataStructs)
 include("${CMAKE_SOURCE_DIR}/cmake/Scripts.cmake")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
 #############################################################
