@@ -11,18 +11,18 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(USE_CLANG_TIDY "Use clang" ON)
 
 if(USE_CLANG_TIDY)
-     message(STATUS "Using clang-tidy")
+    message(STATUS "Using clang-tidy")
      set(CMAKE_CXX_CLANG_TIDY clang-tidy
      --checks=modernize-*,readability-*,performance-*,-modernize-use-trailing-return-type
      --header-filter=.*
      --warnings-as-errors=*
-     )
-    #  add_compile_options(
-    #       -Wunused-variable
-    #       -Wunused-function
-    #       -Wunused-parameter
-    #       -Werror
-    #  )
+    )
+    add_compile_options(
+          -Wunused-variable
+          -Wunused-function
+          -Wunused-parameter
+          -Werror
+    )
 endif()
 # Define warning flags
 set(WAR_PANIC "-Wall -Wextra -pedantic")

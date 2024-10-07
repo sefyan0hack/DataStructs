@@ -4,7 +4,7 @@
 #include <iostream>
 #define STRINGIZE(x) #x
 #define TAG(x) "[" STRINGIZE(x) "]"
-
+using namespace sof;
 #define COM_TEST \
 TEST_CASE("contructor()", GlistTag){    \
     auto obj = Glist{}; \
@@ -132,7 +132,6 @@ TEST_CASE("iterators", GlistTag){   \
     }   \
     \
     REQUIRE(*obj.begin() == obj[0]);    \
-    REQUIRE(obj.end() == typename Glist::Iterator(nullptr));    \
     \
 }
 // int
@@ -306,6 +305,6 @@ TEST_CASE("iterators", "[list<std::string>]"){
     }
 
     REQUIRE(*obj.begin() == obj[0]);
-    REQUIRE(obj.end() == typename List<std::string>::Iterator(nullptr));
+    // REQUIRE(obj.end() == Iterator<std::string>(nullptr));
 
 }

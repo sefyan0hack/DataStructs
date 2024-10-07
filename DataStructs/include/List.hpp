@@ -3,11 +3,54 @@
 #include <type_traits>
 #include <cstddef>
 
+#define __TEMPL                                                                \
+  template <typename T>                                                        \
+  requires(!std::is_pointer_v<T> || !std::is_reference_v<T>)
+#define INL_TEMPL __TEMPL inline
+
 /// @brief Forward declaration in std
 namespace std {
     template <typename T>
     class optional;  // Forward declaration of std::optional
 }
+namespace sof {
+
+__TEMPL
+struct Node
+{
+    using iterator_category = std::forward_iterator_tag;
+    using value_type = T;
+    using difference_type = std::ptrdiff_t;
+    using pointer = T*;
+    using reference = T&;
+
+    value_type data;
+    Node* next;
+    Node(value_type value, Node* nextNode);
+    bool operator==(const Node& other) const;
+    bool operator!=(const Node& other) const;
+};
+
+__TEMPL
+class Iterator {
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = T;
+        using difference_type = std::ptrdiff_t;
+        using pointer = T*;
+        using reference = T&;
+    public:
+        explicit Iterator(Node<value_type>* node);
+        T& operator*() const;
+        // Pre-increment
+        Iterator& operator++();
+        // Post-increment
+        Iterator operator++(int);
+        bool operator==(const Iterator& other) const;
+        bool operator!=(const Iterator& other) const;
+    private:
+        Node<value_type>* current;
+};
 
 /// @brief Linked List class 
 /// @tparam T (int, float , string)
@@ -20,38 +63,7 @@ class List
     using const_reference = const value_type&;
     using difference_type = std::ptrdiff_t;
     using pointer = T*;
-
-    struct Node
-    {
-        value_type data;
-        Node* next;
-        Node(value_type value, Node* nextNode);
-        bool operator==(const Node& other) const;
-        bool operator!=(const Node& other) const;
-    };
-
-    class Iterator {
-        private:
-            Node* current;
-        public:
-            using iterator_category = std::forward_iterator_tag;
-            using value_type = T;
-            using difference_type = std::ptrdiff_t;
-            using pointer = T*;
-            using reference = T&;
-        public:
-            explicit Iterator(Node* node);
-
-            T& operator*() const;
-
-            // Pre-increment
-            Iterator& operator++();
-
-            // Post-increment
-            Iterator operator++(int);
-            bool operator==(const Iterator& other) const;
-            bool operator!=(const Iterator& other) const;
-    };
+    
 public:
     /// @brief Default Constructor List
     List();
@@ -97,11 +109,11 @@ public:
 
     /// @brief return Iterator to begin of List
     /// @return Iterator to begin of List . if list is empty Iterator(nullptr)
-    Iterator begin();
+    Iterator<value_type> begin();
 
     /// @brief return Iterator to end of List
     /// @return Iterator to end of List . if list is empty Iterator(nullptr)
-    Iterator end();
+    Iterator<value_type> end();
 
     /// @brief inssert back
     /// @param value value of node
@@ -144,6 +156,8 @@ public:
     std::optional<size_t> find(const value_type& val) const;
 private:
     size_t m_size;
-    Node* Head;
+    Node<value_type>* Head;
 };
 
+
+} // namespace sof
