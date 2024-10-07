@@ -1,4 +1,8 @@
 #pragma once
+
+#include <type_traits>
+#include <cstddef>
+
 /// @brief Forward declaration in std
 namespace std {
     template <typename T>
@@ -7,7 +11,7 @@ namespace std {
 
 /// @brief Linked List class 
 /// @tparam T (int, float , string)
-template<typename T> requires (!std::is_same_v<T, const char*>) 
+template<typename T> requires (!std::is_pointer_v<T> || !std::is_reference_v<T>)
 class List
 {
     public:
@@ -22,6 +26,8 @@ class List
         value_type data;
         Node* next;
         Node(value_type value, Node* nextNode);
+        bool operator==(const Node& other) const;
+        bool operator!=(const Node& other) const;
     };
 
     class Iterator {
@@ -101,10 +107,15 @@ public:
     /// @param value value of node
     void push_back(value_type value);
 
-    /// @brief inssert at given pos
-    /// @param pos position to inssert in
+    /// @brief bush node befor pos
+    /// @param pos pos you want to push befor it
     /// @param value value of node
-    void push_at(size_t pos, value_type value);
+    void push_befor(size_t pos, value_type value);
+
+    /// @brief bush node after pos
+    /// @param pos pos you want to push after it
+    /// @param value value of node
+    void push_after(size_t pos, value_type value);
 
     /// @brief Remove last element in list
     void pop();

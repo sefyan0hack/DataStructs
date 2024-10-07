@@ -6,11 +6,28 @@
 #include <cstring>
 #include "include/List.hpp"
 
+#define __TEMPL template<typename T> requires (!std::is_pointer_v<T> || !std::is_reference_v<T>)
+#define INL_TEMPL __TEMPL inline
+
+#pragma region List::Node
+
+INL_TEMPL
+List<T>::Node::Node(value_type value, Node *nextNode): data(value), next(nextNode){}
+
+INL_TEMPL
+bool List<T>::Node::operator==(const Node& other) const
+{
+    return this->data == other.data;
+}
+
+INL_TEMPL
+bool List<T>::Node::operator!=(const Node& other) const
+{
+    return this->data != other.data;
+}
+#pragma endregion
 
 #pragma region List::Iterator
-
-#define __TEMPL template<typename T> requires (!std::is_same_v<T, const char*>)
-#define INL_TEMPL __TEMPL inline
 
 INL_TEMPL
 List<T>::Iterator::Iterator(Node* node) : current(node) {}
@@ -42,8 +59,6 @@ bool List<T>::Iterator::operator!=(const Iterator& other) const {
 }
 #pragma endregion
 
-INL_TEMPL
-List<T>::Node::Node(value_type value, Node *nextNode): data(value), next(nextNode){}
 
 #pragma region List
 INL_TEMPL
@@ -58,7 +73,7 @@ List<T>::List(size_t size, value_type init):List(){
 
 INL_TEMPL
 List<T>::List(const List& other){
-     if (other.Head) {
+    if (other.Head) {
         this->Head = new Node{other.Head->data, nullptr};
         Node* current = this->Head;
         m_size = 1;
@@ -161,7 +176,7 @@ void List<T>::push_back(value_type value){
 };
 
 INL_TEMPL
-void List<T>::push_at(size_t pos, value_type value){
+void List<T>::push_befor(size_t pos, value_type value){
     assert(pos < m_size);
     Node *n = new Node(value, nullptr);
     if (pos == 0) {
@@ -172,8 +187,28 @@ void List<T>::push_at(size_t pos, value_type value){
         for (size_t i = 0; i < pos - 1 ; i++) {
             c = c->next;
         }
-        n->next = c->next;
+        Node* tmp = c->next;
         c->next = n;
+        n->next = tmp;
+    }
+    m_size++;
+}
+
+INL_TEMPL
+void List<T>::push_after(size_t pos, value_type value){
+    assert(pos < m_size);
+    Node *n = new Node(value, nullptr);
+    if (pos == 0) {
+        n->next = Head;
+        Head = n;
+    } else {
+        Node *c = Head;
+        for (size_t i = 0; i < pos; i++) {
+            c = c->next;
+        }
+        Node* tmp = c->next;
+        c->next = n;
+        n->next = tmp;
     }
     m_size++;
 }
@@ -225,7 +260,6 @@ void List<T>::clear() {
     
     Head = nullptr;
     m_size = 0;
-    
 }
 
 INL_TEMPL
@@ -290,8 +324,9 @@ List<T>::const_reference List<T>::front() const{
 
 #pragma region Explicit template instantiation
 template class List<int>;
+template class List<short>;
 template class List<float>;
-// template class List<const char*>; //not supported
+template class List<double>;
 template class List<std::string>;
 #pragma endregion
 
