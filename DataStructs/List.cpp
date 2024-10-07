@@ -323,12 +323,8 @@ List<T>::const_reference List<T>::front() const{
 #pragma endregion
 
 #pragma region Explicit template instantiation
-template class List<char>;
-template class List<bool>;
 template class List<short>;
 template class List<int>;
-template class List<short>;
-template class List<float>;
 template class List<double>;
 template class List<std::string>;
 #pragma endregion
