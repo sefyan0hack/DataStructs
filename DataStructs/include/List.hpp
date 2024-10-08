@@ -1,13 +1,18 @@
 #pragma once
 
-#include <type_traits>
-#include <cstddef>
+// #include <type_traits>
+// #include <cstddef>
 
 #define __TEMPL                                                                \
   template <typename T>                                                        \
   requires(!std::is_pointer_v<T> || !std::is_reference_v<T>)
 #define INL_TEMPL __TEMPL inline
 
+#define List_Init(t)\
+    template class sof::List<t>;\
+    template class sof::Node<t>;\
+    template class sof::Iterator<t>
+    
 /// @brief Forward declaration in std
 namespace std {
     template <typename T>
@@ -16,13 +21,14 @@ namespace std {
 namespace sof {
 
 __TEMPL
-struct Node
+class Node
 {
-    using iterator_category = std::forward_iterator_tag;
+    public:
     using value_type = T;
     using difference_type = std::ptrdiff_t;
     using pointer = T*;
     using reference = T&;
+    using iterator_category = std::forward_iterator_tag;
 
     value_type data;
     Node* next;
@@ -34,13 +40,14 @@ struct Node
 __TEMPL
 class Iterator {
     public:
-        using iterator_category = std::forward_iterator_tag;
         using value_type = T;
+        using Node_t = Node<value_type>;
         using difference_type = std::ptrdiff_t;
         using pointer = T*;
         using reference = T&;
+        using iterator_category = std::forward_iterator_tag;
     public:
-        explicit Iterator(Node<value_type>* node);
+        explicit Iterator(Node_t* node);
         T& operator*() const;
         // Pre-increment
         Iterator& operator++();
@@ -49,7 +56,7 @@ class Iterator {
         bool operator==(const Iterator& other) const;
         bool operator!=(const Iterator& other) const;
     private:
-        Node<value_type>* current;
+        Node_t* current;
 };
 
 /// @brief Linked List class 
@@ -59,6 +66,8 @@ class List
 {
     public:
     using value_type = T;
+    using Node_t = Node<value_type>;
+    using Iterator = Iterator<value_type>;
     using reference	= value_type&;
     using const_reference = const value_type&;
     using difference_type = std::ptrdiff_t;
@@ -109,11 +118,11 @@ public:
 
     /// @brief return Iterator to begin of List
     /// @return Iterator to begin of List . if list is empty Iterator(nullptr)
-    Iterator<value_type> begin();
+    Iterator begin();
 
     /// @brief return Iterator to end of List
     /// @return Iterator to end of List . if list is empty Iterator(nullptr)
-    Iterator<value_type> end();
+    Iterator end();
 
     /// @brief inssert back
     /// @param value value of node
@@ -156,7 +165,7 @@ public:
     std::optional<size_t> find(const value_type& val) const;
 private:
     size_t m_size;
-    Node<value_type>* Head;
+    Node_t* Head;
 };
 
 

@@ -6,16 +6,13 @@
 #include <type_traits>
 #include "include/List.hpp"
 
-
-// #define __TEMPL                                                                \
-//   template <typename T>                                                        \
-//   requires(!std::is_pointer_v<T> || !std::is_reference_v<T>)
-// #define INL_TEMPL __TEMPL inline
 using namespace sof;
+
+
 #pragma region List::Node<T>
 
 INL_TEMPL
-Node<T>::Node(value_type value, Node<T> *nextNode)
+Node<T>::Node(value_type value, Node *nextNode)
     : data(value), next(nextNode) {}
 
 INL_TEMPL
@@ -287,10 +284,10 @@ std::optional<size_t> List<T>::find(const value_type &val) const {
 }
 
 INL_TEMPL
-Iterator<T> List<T>::begin() { return Iterator<T>(Head); }
+Iterator<T> List<T>::begin() { return Iterator(Head); }
 
 INL_TEMPL
-Iterator<T> List<T>::end() { return Iterator<T>(nullptr); }
+Iterator<T> List<T>::end() { return Iterator(nullptr); }
 
 INL_TEMPL
 List<T>::reference List<T>::front() {
@@ -312,23 +309,11 @@ List<T>::const_reference List<T>::front() const {
 #pragma endregion
 
 #pragma region Explicit template instantiation
-template class Node<short>;
-template class Node<int>;
-template class Node<float>;
-template class Node<double>;
-template class Node<std::string>;
-
-template class Iterator<short>;
-template class Iterator<int>;
-template class Iterator<float>;
-template class Iterator<double>;
-template class Iterator<std::string>;
-
-template class List<short>;
-template class List<int>;
-template class List<float>;
-template class List<double>;
-template class List<std::string>;
+List_Init(int);
+List_Init(short);
+List_Init(float);
+List_Init(double);
+List_Init(std::string);
 #pragma endregion
 
 #undef INL_TEMPL

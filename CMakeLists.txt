@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Clang Tidy
-option(USE_CLANG_TIDY "Use clang" ON)
+option(USE_CLANG_TIDY "Use clang" OFF)
 
 if(USE_CLANG_TIDY)
     message(STATUS "Using clang-tidy")
