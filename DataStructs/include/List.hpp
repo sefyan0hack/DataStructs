@@ -1,18 +1,5 @@
 #pragma once
 
-// #include <type_traits>
-// #include <cstddef>
-
-#define __TEMPL                                                                \
-  template <typename T>                                                        \
-  requires(!std::is_pointer_v<T> || !std::is_reference_v<T>)
-#define INL_TEMPL __TEMPL inline
-
-#define List_Init(t)\
-    template class sof::List<t>;\
-    template class sof::Node<t>;\
-    template class sof::Iterator<t>
-    
 /// @brief Forward declaration in std
 namespace std {
     template <typename T>
@@ -20,7 +7,7 @@ namespace std {
 }
 namespace sof {
 
-__TEMPL
+template<typename T> requires(!std::is_pointer_v<T> || !std::is_reference_v<T>)
 class Node
 {
     public:
@@ -37,7 +24,7 @@ class Node
     bool operator!=(const Node& other) const;
 };
 
-__TEMPL
+template<typename T> requires(!std::is_pointer_v<T> || !std::is_reference_v<T>)
 class Iterator {
     public:
         using value_type = T;
@@ -61,7 +48,7 @@ class Iterator {
 
 /// @brief Linked List class 
 /// @tparam T (int, float , string)
-template<typename T> requires (!std::is_pointer_v<T> || !std::is_reference_v<T>)
+template<typename T> requires(!std::is_pointer_v<T> || !std::is_reference_v<T>)
 class List
 {
     public:

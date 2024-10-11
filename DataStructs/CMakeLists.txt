@@ -6,22 +6,14 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #############################################################
 # Add Libs
 #############################################################
-add_library(List STATIC ${CMAKE_CURRENT_SOURCE_DIR}/List.cpp)
-# add_library(DList STATIC ${CMAKE_CURRENT_SOURCE_DIR}/DList.cpp)
-
-foreach(target List)
-    target_include_directories(${target}
-        PUBLIC
-            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>  # For build tree
-            $<INSTALL_INTERFACE:include>                            # For install tree
-    )
-endforeach()
+add_LIB(List)
+add_LIB(Stack)
 
 #############################################################
 # Installing
 #############################################################
 install_tar(List LIST)
-# install_tar(List DLIST)
+install_tar(List Stack)
 
 install(DIRECTORY
     ${CMAKE_CURRENT_SOURCE_DIR}/include  DESTINATION  .

@@ -1,6 +1,9 @@
+include("${CMAKE_SOURCE_DIR}/cmake/Scripts.cmake")
 project(DataStructs)
 
-# include_directories("${CMAKE_CURRENT_SOURCE_DIR}/DataStructs")
+############################################################################################################
+#	Include Catch2
+############################################################################################################
 set(CATCH2_BUILD_TYPE Release)
 set(CMAKE_BUILD_TYPE ${CATCH2_BUILD_TYPE} CACHE STRING "Build type" FORCE)
 if(EXISTS "${CMAKE_SOURCE_DIR}/Catch2")
@@ -31,30 +34,20 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/Catch2")
 endif()
 set(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING "Build type" FORCE)  # Restore original build type
 
-add_executable(List_test "${CMAKE_CURRENT_SOURCE_DIR}/List.cpp")
+############################################################################################################
+#	add tests
+############################################################################################################
 
-target_include_directories(List_test
-    PUBLIC
-        $<TARGET_PROPERTY:List,INTERFACE_INCLUDE_DIRECTORIES>
-)
-
-target_link_libraries(List_test List Catch2::Catch2WithMain)
+New_test_exe(List)
+New_test_exe(Stack)
 
 add_test(NAME ListTest COMMAND List_test)
+add_test(NAME StackTest COMMAND Stack_test)
 
 set(ENV{CXXFLAGS} "--coverage")
 set(CTEST_USE_LAUNCHERS 1)
 set(CTEST_COVERAGE_COMMAND "gcov")
 set(CTEST_MEMORYCHECK_COMMAND "valgrind")
 
-set_tests_properties(ListTest PROPERTIES 
-         LABELS "unit"  # Add a label for easier selection
-)
-
-# You can also set additional properties if needed
-set_tests_properties(ListTest PROPERTIES 
-         RUN_SERIAL TRUE  # Run tests serially, if necessary
-         WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"  # Set working directory
-)
 include(CTest)
 
