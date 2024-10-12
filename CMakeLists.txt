@@ -31,6 +31,11 @@ set(WAR_PANIC "-Wall -Wextra -pedantic")
 if(MSVC)
     set(CMAKE_CXX_FLAGS_RELEASE "/O2 /MD /DNDEBUG /Ob2")  # Optimize for MSVC
     set(CMAKE_CXX_FLAGS_DEBUG "/Od /MDd /fsanitize=address /Zi /RTC1")  # Debugging for MSVC
+    if (SANITIZE_ADDRESS)
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /INCREMENTAL:NO")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /INCREMENTAL:NO")
+    endif()
+    add_compile_options(/wd4005)  # Disable macro redefinition warning
 else()
     set(CMAKE_CXX_FLAGS_RELEASE "${WAR_PANIC} -O3 -march=native")  # Optimize for GCC/Clang
     set(CMAKE_CXX_FLAGS_DEBUG "${WAR_PANIC} -O0 -g3 -ggdb")  # Debugging for GCC/Clang

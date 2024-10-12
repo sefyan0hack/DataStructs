@@ -5,7 +5,8 @@
 
 using namespace sof;
 
-TEST_CASE("cctor", "[Stack<int>]"){
+TEST_CASE("cctor", "[Stack<int>]")
+{
     auto obj = Stack<int>();
     REQUIRE(obj.size() == 0);
 }
