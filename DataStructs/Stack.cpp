@@ -49,10 +49,10 @@ void Stack<T>::push(const value_type &val)
 INL_TEMPL
 Stack<T>::value_type Stack<T>::pop()
 {
-    auto cont = this->m_container;
+    auto& cont = this->m_container;
 
     value_type x = cont.back();
-    cont.erase(cont.end());
+    cont.pop_back();
     return x;
 }
 
@@ -69,13 +69,21 @@ Stack<T>::size_type Stack<T>::size() const
 }
 
 INL_TEMPL
+Stack<T>::size_type Stack<T>::max_size() const
+{
+    return this->m_max_size;
+}
+
+INL_TEMPL
 std::string Stack<T>::str() const
 {
     std::stringstream stream;
     stream << "{ ";
-    for (auto &&item : m_container)
+    for (const auto &item : m_container)
     {
-        stream << item << ", ";
+        stream << item;
+        if (&item != &m_container.back())
+            stream << ", ";
     }
     stream << " }";
     return stream.str();

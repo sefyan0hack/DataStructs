@@ -29,6 +29,7 @@ namespace sof
         value_type pop();
         const_reference peek() const;
         size_type size() const;
+        size_type max_size() const;
 
        public:
         std::string str() const;
