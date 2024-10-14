@@ -1,3 +1,4 @@
+#include <iostream>
 #include <optional>
 #include <vector>
 #include <sstream>
@@ -41,8 +42,10 @@ Stack<T>::Stack(const Stack &other)
 INL_TEMPL
 void Stack<T>::push(const value_type &val)
 {
-    if (m_max_size == m_container.size())
-        throw std::exception("Stack OverFlow");
+    if (m_max_size == m_container.size()){
+        std::cout << "Stack OverFlow " << std::endl;
+        exit(1);
+    }
     m_container.emplace_back(val);
 }
 
