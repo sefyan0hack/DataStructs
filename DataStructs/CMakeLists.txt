@@ -2,6 +2,25 @@ project(DataStructs)
 include("${CMAKE_SOURCE_DIR}/cmake/Scripts.cmake")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Clang Tidy
+find_program(CLANG_TIDY_EXE NAMES clang-tidy)
+
+option(USE_CLANG_TIDY "Use clang" ON)
+
+if(CLANG_TIDY_EXE)
+    if(USE_CLANG_TIDY)
+        message(STATUS "Using clang-tidy")
+        set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE}
+        --checks=modernize-*,readability-*,performance-*,-modernize-use-trailing-return-type
+        --header-filter=.*
+        )
+        add_compile_options(
+            -Wunused-variable
+            -Wunused-function
+            -Wunused-parameter
+        )
+    endif()
+endif()
 
 #############################################################
 # Add Libs

@@ -17,22 +17,6 @@ file(
   EXPECTED_HASH SHA256=c8cdc32c03816538ce22781ed72964dc864b2a34a310d3b7104812a5ca2d835d
 )
 
-
-# Clang Tidy
-option(USE_CLANG_TIDY "Use clang" ON)
-
-if(USE_CLANG_TIDY)
-    message(STATUS "Using clang-tidy")
-     set(CMAKE_CXX_CLANG_TIDY clang-tidy
-     --checks=modernize-*,readability-*,performance-*,-modernize-use-trailing-return-type
-     --header-filter=.*
-    )
-    add_compile_options(
-          -Wunused-variable
-          -Wunused-function
-          -Wunused-parameter
-    )
-endif()
 # Define warning flags
 set(WAR_PANIC "-Wall -Wextra -pedantic")
 
