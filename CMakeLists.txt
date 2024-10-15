@@ -6,22 +6,31 @@ project(DataStructs LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
+
+#add CPM as pack man
+file(
+  DOWNLOAD
+  https://github.com/cpm-cmake/CPM.cmake/releases/download/v0.40.2/CPM.cmake
+  ${CMAKE_SOURCE_DIR}/cmake/CPM.cmake
+  EXPECTED_HASH SHA256=c8cdc32c03816538ce22781ed72964dc864b2a34a310d3b7104812a5ca2d835d
+)
+
 
 # Clang Tidy
-option(USE_CLANG_TIDY "Use clang" OFF)
+option(USE_CLANG_TIDY "Use clang" ON)
 
 if(USE_CLANG_TIDY)
     message(STATUS "Using clang-tidy")
      set(CMAKE_CXX_CLANG_TIDY clang-tidy
      --checks=modernize-*,readability-*,performance-*,-modernize-use-trailing-return-type
      --header-filter=.*
-     --warnings-as-errors=*
     )
     add_compile_options(
           -Wunused-variable
           -Wunused-function
           -Wunused-parameter
-          -Werror
     )
 endif()
 # Define warning flags

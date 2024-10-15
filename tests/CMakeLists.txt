@@ -1,35 +1,31 @@
 include("${CMAKE_SOURCE_DIR}/cmake/Scripts.cmake")
+include("${CMAKE_SOURCE_DIR}/cmake/CPM.cmake")
 project(DataStructs)
 
 ############################################################################################################
 #	Include Catch2
 ############################################################################################################
 if(EXISTS "${CMAKE_SOURCE_DIR}/Catch2")
+	#if there is "Catch2" (repo) in main dir use it
     message(STATUS "Using local Catch2")
     add_subdirectory("${CMAKE_SOURCE_DIR}/Catch2" "${CMAKE_BINARY_DIR}/Catch2-build")
-	else()
-    message(STATUS "Fetching Catch2 from GitHub")
-    include(FetchContent)
-    set(FETCHCONTENT_QUIET off)
-	FetchContent_Declare(Catch2
-	GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-	GIT_TAG 3.7.1
-	GIT_PROGRESS on
-	STAMP_DIR "${${PROJECT_NAME}_BUILD_DIR}"
-	DOWNLOAD_NO_PROGRESS off
-	LOG_DOWNLOAD on
-	LOG_UPDATE on
-	LOG_PATCH off
-	LOG_CONFIGURE on
-	LOG_BUILD on
-	LOG_INSTALL off
-	LOG_TEST off
-	LOG_MERGED_STDOUTERR on
-	LOG_OUTPUT_ON_FAILURE on
-	USES_TERMINAL_DOWNLOAD on
+else()
+	CPMAddPackage(
+		NAME Catch2
+		VERSION 3.7.1
+		GITHUB_REPOSITORY catchorg/Catch2
+		OPTIONS
+			"CATCH_INSTALL_DOCS OFF"
+			"CATCH_INSTALL_EXTRAS OFF"
+			"CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS OFF"
+			"CATCH_BUILD_TESTING OFF"
+			"CATCH_DEVELOPMENT_BUILD OFF"
+			"CATCH_BUILD_EXAMPLES OFF"
+			"CATCH_ENABLE_BENCHMARK OFF"
 	)
-	FetchContent_MakeAvailable(Catch2)
 endif()
+
+
 ############################################################################################################
 #	add tests
 ############################################################################################################
