@@ -13,7 +13,7 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/Catch2")
     set(FETCHCONTENT_QUIET off)
 	FetchContent_Declare(Catch2
 	GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-	GIT_TAG devel
+	GIT_TAG 3.7.1
 	GIT_PROGRESS on
 	STAMP_DIR "${${PROJECT_NAME}_BUILD_DIR}"
 	DOWNLOAD_NO_PROGRESS off
