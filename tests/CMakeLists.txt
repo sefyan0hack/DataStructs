@@ -4,8 +4,6 @@ project(DataStructs)
 ############################################################################################################
 #	Include Catch2
 ############################################################################################################
-set(CATCH2_BUILD_TYPE Release)
-set(CMAKE_BUILD_TYPE ${CATCH2_BUILD_TYPE} CACHE STRING "Build type" FORCE)
 if(EXISTS "${CMAKE_SOURCE_DIR}/Catch2")
     message(STATUS "Using local Catch2")
     add_subdirectory("${CMAKE_SOURCE_DIR}/Catch2" "${CMAKE_BINARY_DIR}/Catch2-build")
@@ -21,19 +19,17 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/Catch2")
 	DOWNLOAD_NO_PROGRESS off
 	LOG_DOWNLOAD on
 	LOG_UPDATE on
-	LOG_PATCH on
+	LOG_PATCH off
 	LOG_CONFIGURE on
 	LOG_BUILD on
 	LOG_INSTALL off
-	LOG_TEST on
+	LOG_TEST off
 	LOG_MERGED_STDOUTERR on
 	LOG_OUTPUT_ON_FAILURE on
 	USES_TERMINAL_DOWNLOAD on
 	)
 	FetchContent_MakeAvailable(Catch2)
 endif()
-set(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING "Build type" FORCE)  # Restore original build type
-
 ############################################################################################################
 #	add tests
 ############################################################################################################
