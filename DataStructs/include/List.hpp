@@ -36,7 +36,6 @@ namespace sof
         using reference         = T&;
         using iterator_category = std::forward_iterator_tag;
 
-       public:
         explicit Iterator(Node_t* node);
         T& operator*() const;
         // Pre-increment
@@ -64,7 +63,6 @@ namespace sof
         using difference_type = std::ptrdiff_t;
         using pointer         = T*;
 
-       public:
         /// @brief Default Constructor List
         List();
 

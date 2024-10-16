@@ -43,7 +43,7 @@ INL_TEMPL
 void Stack<T>::push(const value_type &val)
 {
     if (m_max_size == m_container.size()){
-        std::cout << "Stack OverFlow " << std::endl;
+        std::cout << "Stack OverFlow " << "\n";
         exit(1);
     }
     m_container.emplace_back(val);
@@ -54,9 +54,9 @@ Stack<T>::value_type Stack<T>::pop()
 {
     auto& cont = this->m_container;
 
-    value_type x = cont.back();
+    value_type element = cont.back();
     cont.pop_back();
-    return x;
+    return element;
 }
 
 INL_TEMPL
@@ -85,8 +85,9 @@ std::string Stack<T>::str() const
     for (const auto &item : m_container)
     {
         stream << item;
-        if (&item != &m_container.back())
+        if (&item != &m_container.back()){
             stream << ", ";
+        }
     }
     stream << " }";
     return stream.str();

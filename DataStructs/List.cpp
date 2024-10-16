@@ -21,7 +21,7 @@ using namespace sof;
 #pragma region List::Node < T>
 
 INL_TEMPL
-Node<T>::Node(value_type value, Node *nextNode) : data(value), next(nextNode) {}
+Node<T>::Node(value_type value, Node *nextNode) : data(std::move(value)), next(nextNode) {}
 
 INL_TEMPL
 bool Node<T>::operator==(const Node<T> &other) const
@@ -82,7 +82,7 @@ List<T>::List() : m_size(0), Head(nullptr) {}
 INL_TEMPL
 List<T>::List(size_t size, value_type init) : List()
 {
-    for (size_t i = 0; i < size; i++)
+    for (size_t index = 0; index < size; index++)
     {
         this->push_back(init);
     }
@@ -126,32 +126,32 @@ List<T> List<T>::operator=(const List &other)
 {
     if (this->m_size == other.m_size)
     {
-        for (size_t i = 0; i < this->m_size; i++)
+        for (size_t index = 0; index < this->m_size; index++)
         {
-            (*this)[i] = other[i];
+            (*this)[index] = other[index];
         }
     }
     else if (this->m_size < other.m_size)
     {
-        size_t i;
-        for (i = 0; i < this->m_size; i++)
+        size_t index;
+        for (index = 0; index < this->m_size; index++)
         {
-            (*this)[i] = other[i];
+            (*this)[index] = other[index];
         }
-        for (size_t j = i; j < other.m_size; j++)
+        for (size_t jindex = index; jindex < other.m_size; jindex++)
         {
-            this->push_back(other[j]);
+            this->push_back(other[jindex]);
         }
     }
     else
     {
-        size_t i;
+        size_t index;
         size_t this_size = this->m_size;
-        for (i = 0; i < other.m_size; i++)
+        for (index = 0; index < other.m_size; index++)
         {
-            (*this)[i] = other[i];
+            (*this)[index] = other[index];
         }
-        for (size_t j = i; j < this_size; j++)
+        for (size_t jindex = index; jindex < this_size; jindex++)
         {
             this->pop();
         }
@@ -165,7 +165,7 @@ List<T>::value_type List<T>::operator[](size_t index) const
     assert(index < m_size);
 
     Node<T> *current = Head;
-    for (size_t i = 0; i < index; i++)
+    for (size_t Iindex = 0; Iindex < index; Iindex++)
     {
         current = current->next;
     }
@@ -179,7 +179,7 @@ List<T>::reference List<T>::operator[](size_t index)
     assert(index < m_size);
 
     Node<T> *current = Head;
-    for (size_t i = 0; i < index; i++)
+    for (size_t Iindex = 0; Iindex < index; Iindex++)
     {
         current = current->next;
     }
@@ -196,19 +196,19 @@ bool List<T>::empty() const noexcept
 INL_TEMPL
 void List<T>::push_back(value_type value)
 {
-    Node<T> *n = new Node<T>(value, nullptr);
+    auto *newNode = new Node<T>(value, nullptr);
     if (Head == nullptr)
     {
-        Head = n;
+        Head = newNode;
     }
     else
     {
-        Node<T> *c = Head;
-        while (c->next != nullptr)
+        Node<T> *current = Head;
+        while (current->next != nullptr)
         {
-            c = c->next;
+            current = current->next;
         }
-        c->next = n;
+        current->next = newNode;
     }
     m_size++;
 };
@@ -217,22 +217,22 @@ INL_TEMPL
 void List<T>::push_befor(size_t pos, value_type value)
 {
     assert(pos < m_size);
-    Node<T> *n = new Node<T>(value, nullptr);
+    auto *newNode = new Node<T>(value, nullptr);
     if (pos == 0)
     {
-        n->next = Head;
-        Head    = n;
+        newNode->next = Head;
+        Head    = newNode;
     }
     else
     {
-        Node<T> *c = Head;
-        for (size_t i = 0; i < pos - 1; i++)
+        Node<T> *current = Head;
+        for (size_t index = 0; index < pos - 1; index++)
         {
-            c = c->next;
+            current = current->next;
         }
-        Node<T> *tmp = c->next;
-        c->next      = n;
-        n->next      = tmp;
+        Node<T> *tmp = current->next;
+        current->next      = newNode;
+        newNode->next      = tmp;
     }
     m_size++;
 }
@@ -241,22 +241,22 @@ INL_TEMPL
 void List<T>::push_after(size_t pos, value_type value)
 {
     assert(pos < m_size);
-    Node<T> *n = new Node<T>(value, nullptr);
+    auto *newNode = new Node<T>(value, nullptr);
     if (pos == 0)
     {
-        n->next = Head;
-        Head    = n;
+        newNode->next = Head;
+        Head    = newNode;
     }
     else
     {
-        Node<T> *c = Head;
-        for (size_t i = 0; i < pos; i++)
+        Node<T> *current = Head;
+        for (size_t index = 0; index < pos; index++)
         {
-            c = c->next;
+            current = current->next;
         }
-        Node<T> *tmp = c->next;
-        c->next      = n;
-        n->next      = tmp;
+        Node<T> *tmp = current->next;
+        current->next      = newNode;
+        newNode->next      = tmp;
     }
     m_size++;
 }
@@ -271,13 +271,13 @@ void List<T>::pop()
     }
     else
     {
-        Node<T> *c = Head;
-        for (size_t i = 0; i < m_size - 2; i++)
+        Node<T> *current = Head;
+        for (size_t index = 0; index < m_size - 2; index++)
         {
-            c = c->next;
+            current = current->next;
         }
-        delete c->next;
-        c->next = nullptr;
+        delete current->next;
+        current->next = nullptr;
     }
     m_size--;
 }
@@ -294,13 +294,13 @@ void List<T>::remove(size_t pos)
     }
     else
     {
-        Node<T> *c = Head;
-        for (size_t i = 0; i < pos - 1; i++)
+        Node<T> *current = Head;
+        for (size_t index = 0; index < pos - 1; index++)
         {
-            c = c->next;
+            current = current->next;
         }
-        Node<T> *tmp = c->next;
-        c->next      = c->next->next;
+        Node<T> *tmp = current->next;
+        current->next      = current->next->next;
         delete tmp;
     }
     m_size--;
@@ -333,17 +333,17 @@ std::string List<T>::str() const
 {
     std::ostringstream oss;
     oss << "{ ";
-    Node<T> *c = Head;
-    size_t i   = 0;
-    while (c != nullptr)
+    Node<T> *current = Head;
+    size_t index   = 0;
+    while (current != nullptr)
     {
-        oss << "[" << i << "] = " << c->data;
-        if (i < m_size - 1)
+        oss << "[" << index << "] = " << current->data;
+        if (index < m_size - 1)
         {
             oss << ", ";
         }
-        c = c->next;
-        i++;
+        current = current->next;
+        index++;
     }
     oss << " }";
     return oss.str();
@@ -352,11 +352,11 @@ std::string List<T>::str() const
 INL_TEMPL
 std::optional<size_t> List<T>::find(const value_type &val) const
 {
-    for (size_t i = 0; i < m_size; i++)
+    for (size_t index = 0; index < m_size; index++)
     {
-        if ((*this)[i] == val)
+        if ((*this)[index] == val)
         {
-            return i;
+            return index;
             break;
         }
     }
@@ -378,8 +378,9 @@ Iterator<T> List<T>::end()
 INL_TEMPL
 List<T>::reference List<T>::front()
 {
-    if (this->empty())
+    if (this->empty()){
         throw "Linked List is empty";
+    }
     return Head->data;
 }
 
@@ -392,8 +393,9 @@ size_t List<T>::size() const noexcept
 INL_TEMPL
 List<T>::const_reference List<T>::front() const
 {
-    if (this->empty())
+    if (this->empty()){
         throw "Linked List is empty";
+    }
     return Head->data;
 }
 

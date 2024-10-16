@@ -32,6 +32,7 @@ if(MSVC)
 else()
     set(CMAKE_CXX_FLAGS_RELEASE "${WAR_PANIC} -O3 -march=native")  # Optimize for GCC/Clang
     set(CMAKE_CXX_FLAGS_DEBUG "${WAR_PANIC} -O0 -g3 -ggdb")  # Debugging for GCC/Clang
+    add_compile_options(-Wno-macro-redefined)
 endif()
 
 set(BUILD_TEST "" ON)

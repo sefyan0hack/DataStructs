@@ -11,7 +11,7 @@ if(CLANG_TIDY_EXE)
     if(USE_CLANG_TIDY)
         message(STATUS "Using clang-tidy")
         set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE}
-        --checks=modernize-*,readability-*,performance-*,-modernize-use-trailing-return-type
+        --checks=modernize-*,readability-*,performance-*,-modernize-use-trailing-return-type,-modernize-use-nodiscard
         --header-filter=.*
         )
         add_compile_options(

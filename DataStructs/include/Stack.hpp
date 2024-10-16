@@ -18,20 +18,17 @@ namespace sof
         using const_reference = const value_type&;
         using pointer         = T*;
 
-       public:
         Stack();
         Stack(size_type max_size);
         Stack(const Stack& other);
         Stack operator=(const Stack& other);
 
-       public:
         void push(const value_type& val);
         value_type pop();
         const_reference peek() const;
         size_type size() const;
         size_type max_size() const;
 
-       public:
         std::string str() const;
 
        private:
