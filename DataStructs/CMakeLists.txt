@@ -14,11 +14,6 @@ if(CLANG_TIDY_EXE)
         --checks=modernize-*,readability-*,performance-*,-modernize-use-trailing-return-type,-modernize-use-nodiscard
         --header-filter=.*
         )
-        add_compile_options(
-            -Wunused-variable
-            -Wunused-function
-            -Wunused-parameter
-        )
     endif()
 endif()
 
