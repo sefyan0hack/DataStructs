@@ -32,9 +32,11 @@ endif()
 
 New_test_exe(List)
 New_test_exe(Stack)
+New_test_exe(Queue)
 
 add_test(NAME ListTest COMMAND List_test)
 add_test(NAME StackTest COMMAND Stack_test)
+add_test(NAME QueueTest COMMAND Queue_test)
 
 set(ENV{CXXFLAGS} "--coverage")
 set(CTEST_USE_LAUNCHERS 1)

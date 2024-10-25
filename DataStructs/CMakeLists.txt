@@ -22,12 +22,14 @@ endif()
 #############################################################
 add_LIB(List)
 add_LIB(Stack)
+add_LIB(Queue)
 
 #############################################################
 # Installing
 #############################################################
 install_tar(List LIST)
-install_tar(List Stack)
+install_tar(Stack STACK)
+install_tar(Queue QUEUE)
 
 install(DIRECTORY
     ${CMAKE_CURRENT_SOURCE_DIR}/include  DESTINATION  .
@@ -41,7 +43,7 @@ include(InstallRequiredSystemLibraries)
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_PACKAGE_VERSION_MAJOR "1")
 set(CPACK_PACKAGE_VERSION_MINOR "0")
-set(CPACK_PACKAGE_DESCRIPTION "My implimentation of datastructs as 2se  yer at FSA (Embeded System)")
+set(CPACK_PACKAGE_DESCRIPTION "My implimentation of data structs as 2sec  year at FSA (Embeded Systeme)")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/sefyan0hack/DataStructs")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/sefyan0hack/DataStructs")
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}-${CMAKE_SYSTEM_NAME}")
