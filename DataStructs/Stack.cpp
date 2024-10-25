@@ -2,12 +2,8 @@
 #include <optional>
 #include <vector>
 #include <sstream>
+#include "include/Config.hpp"
 #include "include/Stack.hpp"
-
-#define __TEMPL           \
-    template <typename T> \
-    requires(!std::is_pointer_v<T> || !std::is_reference_v<T>)
-#define INL_TEMPL __TEMPL inline
 
 #define Stack_Init(t) template class sof::Stack<t>
 

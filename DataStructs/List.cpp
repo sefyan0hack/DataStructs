@@ -4,12 +4,8 @@
 #include <optional>
 #include <sstream>
 #include <type_traits>
+#include "include/Config.hpp"
 #include "include/List.hpp"
-
-#define __TEMPL           \
-    template <typename T> \
-    requires(!std::is_pointer_v<T> || !std::is_reference_v<T>)
-#define INL_TEMPL __TEMPL inline
 
 #define List_Init(t)             \
     template class sof::List<t>; \
