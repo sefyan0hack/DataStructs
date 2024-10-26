@@ -1,5 +1,10 @@
 #pragma once
 
+namespace std
+{
+    template <typename T>
+    class optional;  // Forward declaration of std::optional
+}
 namespace sof
 {
     template <typename T>
@@ -13,17 +18,24 @@ namespace sof
         using pointer         = T*;
 
         Queue();
-        Queue(size_type size, const value_type& init);
+        Queue(size_type size, value_type init);
         ~Queue();
+
+        size_type size() const noexcept;
+        bool empty() const noexcept;
+
+        void push(const value_type& value);
+
+        value_type operator[](size_type index) const;
+        std::string str() const;
 
        private:
         size_type Capacity;
-        size_type m_size;
-        
-        T* buffer;
-        
-        T* Head;
-        T* Tail;
+
+        pointer buffer;
+
+        pointer Head;
+        pointer Tail;
     };
 
 }  // namespace sof
