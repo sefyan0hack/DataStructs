@@ -1,106 +1,105 @@
 #include <iostream>
 #include <string>
+#include <list>
 
 #include "include/Config.hpp"
 #include "include/Queue.hpp"
 
-#define Queue_Init(t) template class sof::Queue<t>;
+#define Queue_Init(t) template class sof::Queue<t, std::list<t>>;  // for now list is the container
 using namespace sof;
 
-template <typename T>
-inline Queue<T>::Queue()
-    : Capacity(32), buffer(new T[Capacity * sizeof(value_type)]), Head(&buffer[0]), Tail(Head - 1)
+template <typename T, typename Cont>
+inline Queue<T, Cont>::Queue() : buffer(Cont())
 {
 }
 
-template <typename T>
-inline Queue<T>::Queue(size_type size, value_type init) : Capacity(128)
+template <typename T, typename Cont>
+inline Queue<T, Cont>::Queue(size_type size, value_type init)
 {
     if (size == 0)
     {
         throw "size should be > 0";
     }
 
-    while (Capacity < size)
+    for (size_type index = 0; index < size; index++)
     {
-        Capacity += Capacity / 2;
-    }
-
-    buffer = new T[Capacity * sizeof(value_type)];
-    Head   = &buffer[0];
-    Tail   = &buffer[size - 1];
-
-    for (size_type i = 0; i < size; i++)
-    {
-        buffer[i] = init;
+        buffer.emplace_back(init);
     }
 }
 
-template <typename T>
-inline Queue<T>::~Queue()
+template <typename T, typename Cont>
+inline Queue<T, Cont>::~Queue()
 {
-    if (buffer != nullptr)
-        delete[] buffer;
 }
 
-template <typename T>
-inline Queue<T>::size_type Queue<T>::size() const noexcept
+template <typename T, typename Cont>
+inline Queue<T, Cont>::size_type Queue<T, Cont>::size() const noexcept
 {
-    return Head == Tail ? 0 : Tail - Head + 1;
+    return buffer.size();
 }
 
-template <typename T>
-inline bool Queue<T>::empty() const noexcept
+template <typename T, typename Cont>
+inline bool Queue<T, Cont>::empty() const noexcept
 {
-    return size() == 0;
+    return buffer.empty();
 }
 
-template <typename T>
-void Queue<T>::push(const value_type& value)
+template <typename T, typename Cont>
+void Queue<T, Cont>::push(const value_type& value)
 {
-    auto size = this->size();
-
-    if (Capacity < size)
-    {
-        Capacity += Capacity / 2;
-        pointer tmp = buffer;
-        buffer      = new T[Capacity * sizeof(value_type)];
-        memcpy(buffer, tmp, size - 1);
-        Head = &buffer[0];
-        Tail = size - 1 < 0 ? Head - 1 : &buffer[size - 1];
-
-        if (buffer != tmp)
-        {
-            delete[] tmp;
-        }
-    }
-
-    Tail++;
-    *Tail = value;
+    buffer.push_back(value);
 }
 
-template <typename T>
-Queue<T>::value_type Queue<T>::operator[](size_type index) const
+template <typename T, typename Cont>
+Queue<T, Cont>::value_type Queue<T, Cont>::operator[](size_type index) const
 {
-    return buffer[index];
+    auto it = buffer.begin();
+    std::advance(it, index);
+    return *it;
 }
 
-template <typename T>
-std::string Queue<T>::str() const {
+template <typename T, typename Cont>
+std::string Queue<T, Cont>::str() const
+{
     std::string os;
-    auto size = this->size();
+    size_type counter = 0;
     os += "{ ";
-    for(size_type i = 0; i < size; i++){
-        os+= "[";
-        os+= std::to_string(i);
-        os+= "]";
-        os+= " = ";
-        os+= std::to_string(buffer[i]);
-        if( i != size - 1) {
-            os+= ", ";
+    for (const auto& elm : buffer)
+    {
+        os += "[";
+        os += std::to_string(counter++);
+        os += "]";
+        os += " = ";
+        os += std::to_string(elm);
+        if (counter != this->size() - 1)
+        {
+            os += ", ";
         }
     }
     os += " }";
     return os;
 }
+
+template <typename T, typename Cont>
+void Queue<T, Cont>::pop()
+{
+    if (not empty())
+    {
+        buffer.pop_front();
+    }
+}
+
+
+template <typename T, typename Cont>
+Queue<T, Cont>::Cont_it Queue<T, Cont>::Head()
+{
+    return buffer.begin();
+}
+
+template <typename T, typename Cont>
+Queue<T, Cont>::Cont_it Queue<T, Cont>::Tail()
+{
+    return buffer.end();
+}
+
 Queue_Init(int)

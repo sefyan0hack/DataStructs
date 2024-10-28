@@ -3,8 +3,10 @@
 /// @brief Forward declaration in std
 namespace std
 {
+    #ifndef _OPTIONAL_
     template <typename T>
     class optional;  // Forward declaration of std::optional
+    #endif
 }
 namespace sof
 {
