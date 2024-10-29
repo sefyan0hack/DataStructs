@@ -27,26 +27,26 @@ namespace sof
         using Cont_it         = Cont::iterator;
 
 
-        Queue();
+        Queue() = default;
         Queue(size_type size, value_type init);
-        ~Queue();
+        ~Queue() = default;
 
         size_type size() const noexcept;
         bool empty() const noexcept;
+        void clear();
 
-        void push(const value_type& value);
-        void pop();
+        void enqueue(const value_type& value);
+        value_type dequeue();
 
-        value_type operator[](size_type index) const;
         std::string str() const;
+        void print() const;
 
        private:
         size_type Capacity;
-
         Cont buffer;
 
-        Cont_it Head();
-        Cont_it Tail();
+        value_type operator[](size_type index) const;
+        
     };
 
 }  // namespace sof

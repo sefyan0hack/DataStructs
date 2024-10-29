@@ -11,9 +11,8 @@ TEST_CASE("cctor", "Queue<int>"){
     auto obj2 = Queue<int>(10, 1);
     REQUIRE(obj2.size() == 10);
 
-    obj2.push(0);
+    obj2.enqueue(0);
     REQUIRE(obj2.size() == 11);
-    REQUIRE(obj2[10] == 0);
     std::cout << obj2.str();
 
 }

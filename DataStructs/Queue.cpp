@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <list>
 
 #include "include/Config.hpp"
@@ -7,11 +8,6 @@
 
 #define Queue_Init(t) template class sof::Queue<t, std::list<t>>;  // for now list is the container
 using namespace sof;
-
-template <typename T, typename Cont>
-inline Queue<T, Cont>::Queue() : buffer(Cont())
-{
-}
 
 template <typename T, typename Cont>
 inline Queue<T, Cont>::Queue(size_type size, value_type init)
@@ -28,11 +24,6 @@ inline Queue<T, Cont>::Queue(size_type size, value_type init)
 }
 
 template <typename T, typename Cont>
-inline Queue<T, Cont>::~Queue()
-{
-}
-
-template <typename T, typename Cont>
 inline Queue<T, Cont>::size_type Queue<T, Cont>::size() const noexcept
 {
     return buffer.size();
@@ -44,11 +35,6 @@ inline bool Queue<T, Cont>::empty() const noexcept
     return buffer.empty();
 }
 
-template <typename T, typename Cont>
-void Queue<T, Cont>::push(const value_type& value)
-{
-    buffer.push_back(value);
-}
 
 template <typename T, typename Cont>
 Queue<T, Cont>::value_type Queue<T, Cont>::operator[](size_type index) const
@@ -61,45 +47,53 @@ Queue<T, Cont>::value_type Queue<T, Cont>::operator[](size_type index) const
 template <typename T, typename Cont>
 std::string Queue<T, Cont>::str() const
 {
-    std::string os;
+    std::stringstream os;
     size_type counter = 0;
-    os += "{ ";
+    os << "{ ";
     for (const auto& elm : buffer)
     {
-        os += "[";
-        os += std::to_string(counter++);
-        os += "]";
-        os += " = ";
-        os += std::to_string(elm);
-        if (counter != this->size() - 1)
-        {
-            os += ", ";
-        }
+        os << "[" << counter++ << "]"
+           << " = " << elm << (counter != this->size() ? ", " : " }");
     }
-    os += " }";
-    return os;
+
+    return os.str();
 }
 
 template <typename T, typename Cont>
-void Queue<T, Cont>::pop()
+void sof::Queue<T, Cont>::print() const
+{
+    std::cout << this->str() << "\n";
+}
+
+template <typename T, typename Cont>
+void Queue<T, Cont>::enqueue(const value_type& value)
+{
+    buffer.push_back(value);
+}
+
+template <typename T, typename Cont>
+Queue<T, Cont>::value_type Queue<T, Cont>::dequeue()
 {
     if (not empty())
     {
+        value_type f = buffer.front();
         buffer.pop_front();
+        return f;
+    }
+    else{
+        throw "EXX";
     }
 }
 
-
 template <typename T, typename Cont>
-Queue<T, Cont>::Cont_it Queue<T, Cont>::Head()
+void Queue<T, Cont>::clear()
 {
-    return buffer.begin();
+    buffer.clear();
 }
 
-template <typename T, typename Cont>
-Queue<T, Cont>::Cont_it Queue<T, Cont>::Tail()
-{
-    return buffer.end();
-}
+
+
+
+
 
 Queue_Init(int)
