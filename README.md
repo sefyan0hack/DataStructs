@@ -32,4 +32,7 @@
    ```bash
    git clone https://github.com/sefyan0hack/DataStructs.git
    cd DataStructs
-   cmake --build build
+   mkdir build
+   cd build 
+   cmake ..
+   make
