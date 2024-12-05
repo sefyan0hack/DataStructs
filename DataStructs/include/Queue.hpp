@@ -1,20 +1,9 @@
 #pragma once
+#include <list>
 
-namespace std
-{
-    #ifndef _OPTIONAL_
-    template <typename T>
-    class optional;  // Forward declaration of std::optional
-    #endif
-
-    #ifndef _LIST_
-    template <class T, class _Alloc = allocator<_Ty>>
-    class list;
-    #endif
-}
 namespace sof
 {
-    template <typename T, typename Cont = std::list<int>>
+    template < typename T, typename Cont = std::list<int> >
     class Queue
     {
        public:
