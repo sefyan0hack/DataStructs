@@ -8,6 +8,7 @@
 # Visual Studio Code settings
 .vscode/
 *.code-workspace
+.cache/*
 
 # CMake generated files
 CMakeCache.txt
@@ -39,3 +40,5 @@ Thumbs.db
 
 # Ignore backup files
 *~
+
+compile_commands.json

@@ -1,11 +1,12 @@
 #pragma once
+#include <list>
 
 #include<optional>
 #include<list>
 
 namespace sof
 {
-    template <typename T, typename Cont = std::list<int>>
+    template < typename T, typename Cont = std::list<int> >
     class Queue
     {
        public:

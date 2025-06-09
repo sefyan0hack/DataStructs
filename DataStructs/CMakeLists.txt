@@ -5,7 +5,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Clang Tidy
 find_program(CLANG_TIDY_EXE NAMES clang-tidy)
 
-option(USE_CLANG_TIDY "Use clang" ON)
+#dont turn Clang tidy for now 
+option(USE_CLANG_TIDY "Use clang" OFF)
 
 if(CLANG_TIDY_EXE)
     if(USE_CLANG_TIDY)

@@ -1,7 +1,6 @@
 #pragma once
 
 #include<optional>
-
 namespace sof
 {
     template <typename T>
