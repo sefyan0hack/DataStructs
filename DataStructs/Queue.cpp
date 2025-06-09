@@ -24,7 +24,7 @@ inline Queue<T, Cont>::Queue(size_type size, value_type init)
 }
 
 template <typename T, typename Cont>
-inline Queue<T, Cont>::size_type Queue<T, Cont>::size() const noexcept
+typename Queue<T, Cont>::size_type Queue<T, Cont>::size() const noexcept
 {
     return buffer.size();
 }
@@ -37,7 +37,7 @@ inline bool Queue<T, Cont>::empty() const noexcept
 
 
 template <typename T, typename Cont>
-Queue<T, Cont>::value_type Queue<T, Cont>::operator[](size_type index) const
+typename Queue<T, Cont>::value_type Queue<T, Cont>::operator[](size_type index) const
 {
     auto it = buffer.begin();
     std::advance(it, index);

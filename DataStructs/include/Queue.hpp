@@ -1,17 +1,8 @@
 #pragma once
 
-namespace std
-{
-    #ifndef _OPTIONAL_
-    template <typename T>
-    class optional;  // Forward declaration of std::optional
-    #endif
+#include<optional>
+#include<list>
 
-    #ifndef _LIST_
-    template <class T, class _Alloc = allocator<_Ty>>
-    class list;
-    #endif
-}
 namespace sof
 {
     template <typename T, typename Cont = std::list<int>>
@@ -20,11 +11,11 @@ namespace sof
        public:
         using value_type      = T;
         using reference       = value_type&;
-        using size_type       = Cont::size_type;
+        using size_type       = typename Cont::size_type;
         using const_reference = const value_type&;
         using pointer         = T*;
         
-        using Cont_it         = Cont::iterator;
+        using Cont_it         = typename Cont::iterator;
 
 
         Queue() = default;
